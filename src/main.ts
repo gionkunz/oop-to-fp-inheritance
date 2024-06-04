@@ -1,4 +1,3 @@
-// Base Class: Employee
 class Employee {
   constructor(public name: string, public age: number) {}
 
@@ -7,7 +6,6 @@ class Employee {
   }
 }
 
-// Derived Class: Manager
 class Manager extends Employee {
   constructor(name: string, age: number, public department: string) {
       super(name, age);
@@ -22,7 +20,6 @@ class Manager extends Employee {
   }
 }
 
-// Derived Class: Director
 class Director extends Manager {
   constructor(name: string, age: number, department: string, public region: string) {
       super(name, age, department);
@@ -37,7 +34,6 @@ class Director extends Manager {
   }
 }
 
-// Example usage:
 const employee = new Employee("Alice", 30);
 console.log(employee.getDetails());
 
