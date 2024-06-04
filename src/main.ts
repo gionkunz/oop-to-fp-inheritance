@@ -2,13 +2,13 @@ class Employee {
   constructor(public name: string, public age: number) {}
 
   getDetails(): string {
-      return `Name: ${this.name}, Age: ${this.age}`;
+    return `Name: ${this.name}, Age: ${this.age}`;
   }
 }
 
 class Manager extends Employee {
   constructor(name: string, age: number, public department: string) {
-     super(name, age);
+    super(name, age);
   }
 
   getDetails(): string {
