@@ -1,63 +1,57 @@
-class Employee {
-  constructor(public name: string, public age: number) {}
-
-  getDetails(): string {
-    return `Name: ${this.name}, Age: ${this.age}`;
-  }
+// Interfaces for properties
+interface Employee {
+  readonly name: string;
+  readonly age: number;
 }
 
-class Manager extends Employee {
-  constructor(name: string, age: number, public department: string) {
-    super(name, age);
-  }
-
-  getDetails(): string {
-    return `${super.getDetails()}, Department: ${this.department}`;
-  }
-
-  manage(): string {
-    return `${this.name} is managing the ${this.department} department.`;
-  }
-
-  receiveBonus(performance: number): string {
-    return `${this.name} has received a performance bonus of ${performance * 1000} dollars.`;
-  }
+interface Manager extends Employee {
+  readonly department: string;
 }
 
-class Director extends Manager {
-  constructor(name: string, age: number, department: string, public region: string) {
-    super(name, age, department);
-  }
+interface Director extends Manager {
+  readonly region: string;
+}
 
-  getDetails(): string {
-    return `${super.getDetails()}, Region: ${this.region}`;
-  }
+function getEmployeeDetails(employee: Employee): string {
+  return `Name: ${employee.name}, Age: ${employee.age}`;
+}
 
-  makeStrategicDecision(): string {
-    return `${this.name} is making strategic decisions for the ${this.region} region.`;
-  }
+function getManagerDetails(manager: Manager): string {
+  return `${getEmployeeDetails(manager)}, Department: ${manager.department}`;
+}
 
-  receiveCompanyBonus(performance: number): string {
-    return `${this.name} has received a company-wide performance bonus of ${performance * 5000} dollars.`;
-  }
+function getDirectorDetails(director: Director): string {
+  return `${getManagerDetails(director)}, Region: ${director.region}`;
+}
+
+function manage(manager: Manager): string {
+  return `${manager.name} is managing the ${manager.department} department.`;
+}
+
+function makeStrategicDecision(director: Director): string {
+  return `${director.name} is making strategic decisions for the ${director.region} region.`;
+}
+
+function receiveBonus(employee: Manager, performance: number): string {
+  return `${employee.name} has received a performance bonus of ${performance * 1000} dollars.`;
+}
+
+function receiveCompanyBonus(director: Director, performance: number): string {
+  return `${director.name} has received a company-wide performance bonus of ${performance * 5000} dollars.`;
 }
 
 // Example usage:
-const employee = new Employee("Alice", 30);
-console.log(employee.getDetails());
+const employee: Employee = { name: "Alice", age: 30 };
+console.log(getEmployeeDetails(employee));
 
-const manager = new Manager("Bob", 40, "Sales");
-console.log(manager.getDetails());
-console.log(manager.manage());
-console.log(manager.receiveBonus(0.8));
+const manager: Manager = { name: "Bob", age: 40, department: "Sales" };
+console.log(getManagerDetails(manager));
+console.log(manage(manager));
+console.log(receiveBonus(manager, 0.8));
 
-const director = new Director("Carol", 50, "Marketing", "North America");
-console.log(director.getDetails());
-console.log(director.manage());
-console.log(director.makeStrategicDecision());
-console.log(director.receiveBonus(0.9)); // This does not fit well
-console.log(director.receiveCompanyBonus(0.9)); // New method specific to Director
-
-// The problem:
-// The Director class inherits receiveBonus from Manager but needs an additional receiveCompanyBonus method.
-// This breaks the single responsibility principle and adds unnecessary complexity.
+const director: Director = { name: "Carol", age: 50, department: "Marketing", region: "North America" };
+console.log(getDirectorDetails(director));
+console.log(manage(director));
+console.log(makeStrategicDecision(director));
+console.log(receiveBonus(director, 0.9)); // Director can receive manager's bonus
+console.log(receiveCompanyBonus(director, 0.9)); // Director's additional company-wide bonus
